@@ -1,2 +1,7 @@
-/node_modules
-/_legacy
+_legacy
+node_modules
+build
+**.cache
+.DS_Store
+.env
+.vscode
