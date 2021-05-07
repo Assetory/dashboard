@@ -12,8 +12,8 @@ const App : React.FunctionComponent = () : React.ReactElement =>
             
             <Router>
                 <Switch>
-                    <Route exact path={`/${ process.env.SERVICE_NAME }/`} component={ Public } />
-                    <Route exact path={`/${ process.env.SERVICE_NAME }/private`} component={ Private } />
+                    <Route exact path={`/${ process.env.SERVICE_NAME }/`} component={ Private } />
+                    <Route exact path={`/${ process.env.SERVICE_NAME }/public`} component={ Public } />
                     <Route path={`/${ process.env.SERVICE_NAME }/`} component={ NotFound } />
                 </Switch>
             </Router>

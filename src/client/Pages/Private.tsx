@@ -55,20 +55,22 @@ const Private : React.FunctionComponent<IProps> = ({ history }) : React.ReactEle
                 {
                     !loading ?
                     <>
-                        <p>ID: { userInfo[ 'id' ] }</p>
-                        <p>Email: { userInfo[ 'email' ] }</p>
-                        <p>Email Verified: { userInfo[ 'verified' ] }</p>
-                        <p>Username: { userInfo[ 'userName' ] }</p>
-                        <p>Groups:</p>
                         <ul>
-                            {
-                                userInfo[ 'groups' ].map((group, i) =>
+                            <li><b>ID:</b> { userInfo[ 'id' ] }</li>
+                            <li><b>Email:</b> { userInfo[ 'email' ] }</li>
+                            <li><b>Email Verified:</b> { userInfo[ 'verified' ] }</li>
+                            <li><b>Username:</b> { userInfo[ 'userName' ] }</li>
+                            <li><b>Groups:</b>
+                                <ul>
                                 {
-                                    return <li key={ i }>{ group }</li>;
-                                })
-                            }
+                                    userInfo[ 'groups' ].map((group, i) =>
+                                    {
+                                        return <li key={ i }>{ group }</li>;
+                                    })
+                                }
+                                </ul>
+                            </li>
                         </ul>
-
 
                         <button onClick={() => logout()}>
                             Logout
