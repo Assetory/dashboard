@@ -16,7 +16,7 @@ const Private : React.FunctionComponent<IProps> = ({ history }) : React.ReactEle
         useEffect(() =>
         {
             const keycloakInfo = Keycloak({
-                'realm': 'local',
+                'realm': process.env.SERVICE_ENV,
                 'url': 'https://auth.assetory.net/auth/',
                 'clientId': 'service',
             });
@@ -46,7 +46,7 @@ const Private : React.FunctionComponent<IProps> = ({ history }) : React.ReactEle
         const logout = () : void =>
         {
             history.push('/');
-            
+
             keycloak.logout();
         };
 
@@ -78,9 +78,6 @@ const Private : React.FunctionComponent<IProps> = ({ history }) : React.ReactEle
                     :
                     <p>loading...</p>
                 }
-                <div>
-                    Private Component
-                </div>
             </>
         );
     };

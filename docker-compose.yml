@@ -82,6 +82,7 @@ services:
             - CHOKIDAR_USEPOLLING=1
             - SERVICE_NAME=dashboard
             - SERVICE_PORT=3005
+            - SERVICE_ENV=local
         volumes:
             - ./src:/app/src
         depends_on:
