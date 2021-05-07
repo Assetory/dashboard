@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+import axios from 'axios';
 import Keycloak from 'keycloak-js';
 
 interface IProps {
@@ -29,6 +30,21 @@ const Private : React.FunctionComponent<IProps> = ({ history }) : React.ReactEle
                 keycloakInfo.loadUserInfo().then(userInfo =>
                     {
                         console.log(userInfo);
+
+                        axios.post(
+                            '/dashboard/api/user/create',
+                            null,
+                            {
+                                params: { id: userInfo[ 'sub' ], email: userInfo[ 'email' ] },
+                            })
+                        .then(response =>
+                        {
+                            console.log(response);
+                        })
+                        .catch(error =>
+                        {
+                            console.log(error);
+                        });
         
                         setUserInfo({
                             id: userInfo[ 'sub' ],
@@ -37,7 +53,7 @@ const Private : React.FunctionComponent<IProps> = ({ history }) : React.ReactEle
                             userName: userInfo[ 'preferred_username' ] || 'Not set',
                             groups: userInfo[ 'groups' ],
                         });
-        
+
                         setLoading(false);
                     });
             });
@@ -75,7 +91,6 @@ const Private : React.FunctionComponent<IProps> = ({ history }) : React.ReactEle
                         <button onClick={() => logout()}>
                             Logout
                         </button>
-
                     </>
                     :
                     <p>loading...</p>
