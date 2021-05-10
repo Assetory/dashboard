@@ -93,14 +93,20 @@ services:
     landingpage:
         container_name: landingpage
         restart: always
-        image: assetory/landingpage:develop
+        image: assetory/landingpage:local
         ports: 
             - "3000:3000"
-        environment:
-            CHOKIDAR_USEPOLLING: 1
-            SERVICE_NAME: landingpage
-            SERVICE_PORT: 3000
-            SERVICE_ENV: local
+        depends_on:
+            - gateway
+        networks:
+            - gateway
+
+    user:
+        container_name: user
+        restart: always
+        image: assetory/user:local
+        ports: 
+            - "3010:3010"
         depends_on:
             - gateway
         networks:
