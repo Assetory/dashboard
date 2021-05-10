@@ -21,7 +21,7 @@ const Private : React.FunctionComponent<IProps> = ({ history }) : React.ReactEle
         useEffect(() =>
         {
             const keycloakInfo = Keycloak({
-                'realm': process.env.SERVICE_ENV || 'develop',
+                'realm': process.env.SERVICE_ENV,
                 'url': 'https://auth.assetory.net/auth/',
                 'clientId': 'service',
             });

@@ -46,6 +46,8 @@ jobs:
           command: |
             docker build \
             --build-arg SERVICE_NAME_ARG=$SERVICE_NAME \
+            --build-arg SERVICE_PORT_ARG=$SERVICE_PORT \
+            --build-arg SERVICE_ENV_ARG=develop \
             --build-arg HEALTHCHECK_ID_ARG=$HEALTHCHECK_DEVELOP \
             -t $IMAGE_NAME:develop . 
       
@@ -75,6 +77,8 @@ jobs:
           command: |
             docker build \
             --build-arg SERVICE_NAME_ARG=$SERVICE_NAME \
+            --build-arg SERVICE_PORT_ARG=$SERVICE_PORT \
+            --build-arg SERVICE_ENV_ARG=prod \
             --build-arg HEALTHCHECK_ID_ARG=$HEALTHCHECK_PRODUCTION \
             -t $IMAGE_NAME:latest . 
       
