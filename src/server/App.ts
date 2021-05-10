@@ -5,6 +5,7 @@ import { createHttpTerminator, HttpTerminator } from 'http-terminator';
 import express, { Application } from 'express';
 import { Logger } from '@assetory/logger';
 import path from 'path';
+import { r } from 'rethinkdb-ts';
 
 import { ApiConfig, DBConfig } from './config';
 import { testRoute } from './api';
@@ -23,6 +24,7 @@ class App
     terminator: HttpTerminator;
     serviceName : string;
     servicePort : number;
+    database : any;
     logger : Logger;
 
     /**
@@ -35,6 +37,7 @@ class App
         this.terminator = createHttpTerminator({ server: this.server });
         this.serviceName = String(process.env.SERVICE_NAME);
         this.servicePort = Number(process.env.SERVICE_PORT);
+        this.database = undefined;
         this.logger = new Logger({
             serviceName: process.env.SERVICE_NAME,
             throwErrors: true,
@@ -58,22 +61,35 @@ class App
      */
     async init() : Promise<boolean>
     {
-        await this.config();
+        await this.dbConfig();
+        await this.apiConfig();
+        
+        this.database = await this.dbConfig();
+
+        await this.database.connect();
+
         await this.routes();
         await this.start();
 
         return await true;
+    }
+    
+    dbConfig() : DBConfig
+    {
+        const dbConfig = new DBConfig(this.logger);
+
+        return dbConfig;
     }
 
     /**
      * @method config
      * @returns { ApiConfig() }
      */
-    config() : ApiConfig
+    apiConfig() : ApiConfig
     {
         const apiConfig = new ApiConfig(this.app, this.logger);
 
-        return { apiConfig };
+        return apiConfig;
     }
 
     /**
@@ -82,7 +98,34 @@ class App
      */
     routes() : void
     {
+        const database = this.database;
+        const logger = this.logger;
+
         this.app.get(`/${ this.serviceName }/api/test`, testRoute);
+
+        this.app.post(`/${ process.env.SERVICE_NAME }/api/user/create`, function(req, res)
+        {
+            r.db('User').table('users').insert(req.query).run(database.connection).then((data : any) =>
+            {
+                if(data.inserted === 1)
+                {
+                    logger.info(`successfully added user '${ req.query.id }'.`);
+                    res.json({ success: true, new: true });
+                }
+                else
+                {
+                    res.json({ success: true, new: false });
+                }
+            }).catch((err : any) =>
+            {
+                logger.error(`failed to add user '${ req.query.id }' to database.`);
+
+                res.json({
+                    success: false,
+                });
+            });
+        });
+
         this.app.get(`/${ this.serviceName }/*`, (req, res) =>
         {
             res.sendFile(path.join(__dirname, '../../build/client', 'index.html'));
@@ -112,6 +155,7 @@ class App
     {
         await this.logger.client.quit();
         await this.terminator.terminate();
+        await this.database.closeConnection();
         
         return await true;
     }

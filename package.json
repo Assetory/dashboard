@@ -1,6 +1,6 @@
 {
   "name": "dashboard",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Dashboard service for assetory nodejs applications.",
   "main": "/src/server/index.js",
   "scripts": {
