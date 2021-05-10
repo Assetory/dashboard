@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 volumes:
     postgres_data:
@@ -78,11 +78,11 @@ services:
         ports: 
             - "3005:3005"
             - "3800:3800"
-        environment: 
-            - CHOKIDAR_USEPOLLING=1
-            - SERVICE_NAME=dashboard
-            - SERVICE_PORT=3005
-            - SERVICE_ENV=local
+        environment:
+            CHOKIDAR_USEPOLLING: 1
+            SERVICE_NAME: dashboard
+            SERVICE_PORT: 3005
+            SERVICE_ENV: local
         volumes:
             - ./src:/app/src
         depends_on:
@@ -96,6 +96,11 @@ services:
         image: assetory/landingpage:develop
         ports: 
             - "3000:3000"
+        environment:
+            CHOKIDAR_USEPOLLING: 1
+            SERVICE_NAME: landingpage
+            SERVICE_PORT: 3000
+            SERVICE_ENV: local
         depends_on:
             - gateway
         networks:
