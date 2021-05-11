@@ -6,8 +6,9 @@ const Header : React.FunctionComponent = () : React.ReactElement =>
         <div>
             <ul>
                 <li><a href={'/'}>Back</a></li>
-                <li><a href={`/${ process.env.SERVICE_NAME }/api/test`}>Api test</a></li>
+                <li><a href={`/${ process.env.SERVICE_NAME }/api/test`}>Dashboard Api test</a></li>
                 <li><a href={`/${ process.env.SERVICE_NAME }/`}>Dashboard home</a></li>
+                <li><a href={`/${ process.env.SERVICE_NAME }/`}>User home</a></li>
                 <li><a href={`/${ process.env.SERVICE_NAME }/public`}>Public page</a></li>
                 <li><a href={`/${ process.env.SERVICE_NAME }/error`}>Error page</a></li>
             </ul>
